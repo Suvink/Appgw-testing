@@ -1,23 +1,37 @@
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
+import Cookies from 'js-cookie';
 import './App.css';
 
 function App() {
+  const encodedUserInfo = Cookies.get('userinfo');
+  const [userInfo, setUserInfo] = React.useState(null);
+
+  useEffect(() => {
+    if (!encodedUserInfo) return
+    const userInfo = JSON.parse(atob(encodedUserInfo))
+    if (userInfo) {
+      const info = JSON.stringify(userInfo);
+      localStorage.setItem('userinfo', info);
+      setUserInfo(info);
+      Cookies.remove('userinfo', { path: '/' })
+    }
+  }, [encodedUserInfo]);
+
+  const handleLogout = async () => {
+    localStorage.clear();
+    Cookies.remove('userinfo', { path: '/' })
+    window.location.href = `/auth/logout?session_hint=${Cookies.get('session_hint')}`;
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {
+        userInfo ? <div>
+          <h1>Welcome</h1>
+          <button onClick={handleLogout}>Log Out</button>
+        </div> :
+          <button onClick={() => { window.location.href = "/auth/login" }}>Login</button>
+      }
     </div>
   );
 }
