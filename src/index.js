@@ -3,11 +3,22 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { KindeProvider } from "@kinde-oss/kinde-auth-react";
+import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <KindeProvider
+      clientId="85d4520fca794449bc64929780ad2440"
+      domain="https://suvin.kinde.com"
+      redirectUri="http://localhost:3001"
+      logoutUri="http://localhost:3001"
+    >
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </KindeProvider>
   </React.StrictMode>
 );
 

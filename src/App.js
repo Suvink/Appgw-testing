@@ -1,38 +1,13 @@
-import React, { useEffect } from 'react';
-import Cookies from 'js-cookie';
-import './App.css';
+import React from 'react';
+import { Routes, Route } from "react-router-dom"
+import Home from './Home';
 
 function App() {
-  const encodedUserInfo = Cookies.get('userinfo');
-  const [userInfo, setUserInfo] = React.useState(null);
-
-  useEffect(() => {
-    if (!encodedUserInfo) return
-    const userInfo = JSON.parse(atob(encodedUserInfo))
-    if (userInfo) {
-      const info = JSON.stringify(userInfo);
-      localStorage.setItem('userinfo', info);
-      setUserInfo(info);
-      Cookies.remove('userinfo', { path: '/' })
-    }
-  }, [encodedUserInfo]);
-
-  const handleLogout = async () => {
-    localStorage.clear();
-    Cookies.remove('userinfo', { path: '/' })
-    window.location.href = `/auth/logout?session_hint=${Cookies.get('session_hint')}`;
-  }
 
   return (
-    <div className="App">
-      {
-        userInfo ? <div>
-          <h1>Welcome</h1>
-          <button onClick={handleLogout}>Log Out</button>
-        </div> :
-          <button onClick={() => { window.location.href = "/auth/login" }}>Login</button>
-      }
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+    </Routes>
   );
 }
 
