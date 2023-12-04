@@ -3,22 +3,20 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { KindeProvider } from "@kinde-oss/kinde-auth-react";
+import { StytchProvider } from '@stytch/react';
+import { StytchUIClient } from '@stytch/vanilla-js';
 import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const stytch = new StytchUIClient('public-token-test-23e4f81d-8bf0-4b3d-87e9-a24750844d59');
+
 root.render(
   <React.StrictMode>
-    <KindeProvider
-      clientId="85d4520fca794449bc64929780ad2440"
-      domain="https://suvin.kinde.com"
-      redirectUri="http://localhost:3001"
-      logoutUri="http://localhost:3001"
-    >
+    <StytchProvider stytch={stytch}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </KindeProvider>
+    </StytchProvider>
   </React.StrictMode>
 );
 
