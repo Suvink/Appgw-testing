@@ -27,7 +27,7 @@ function App() {
     <div className="App">
       {
         userInfo ? <div>
-          <h1>Welcome</h1>
+          <h1>Welcome {userInfo.first_name}</h1>
           <button onClick={handleLogout}>Log Out</button>
         </div> :
           <button onClick={() => { window.location.href = "/auth/login" }}>Login</button>
