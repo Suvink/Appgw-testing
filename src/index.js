@@ -8,7 +8,7 @@ import { StytchUIClient } from '@stytch/vanilla-js';
 import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const stytch = new StytchUIClient('public-token-test-23e4f81d-8bf0-4b3d-87e9-a24750844d59');
+const stytch = new StytchUIClient(process.env.REACT_APP_STYTCH_PUBLIC_TOKEN);
 
 root.render(
   <React.StrictMode>
