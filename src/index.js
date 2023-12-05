@@ -10,8 +10,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <RowndProvider
-      appKey="key_tjqyzglrrb2p14elg25prwi2"
-      postLoginRedirect="http://localhost:3001"
+      appKey={process.env.REACT_APP_ROWND_APP_KEY}
+      postLoginRedirect={process.env.REACT_APP_ROWND_POST_LOGIN_PATH}
     >
       <BrowserRouter>
         <App />
