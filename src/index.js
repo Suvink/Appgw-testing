@@ -3,22 +3,19 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { KindeProvider } from "@kinde-oss/kinde-auth-react";
+import { AuthProvider } from '@descope/react-sdk';
 import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <KindeProvider
-      clientId={process.env.REACT_APP_KINDE_CLIENT_ID}
-      domain={process.env.REACT_APP_KINDE_DOMAIN}
-      redirectUri="http://localhost:3001"
-      logoutUri="http://localhost:3001"
+    <AuthProvider
+      projectId={process.env.REACT_APP_DESCOPE_PROJECT_ID}
     >
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </KindeProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
 

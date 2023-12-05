@@ -1,32 +1,45 @@
 import React from 'react';
-import { useKindeAuth } from '@kinde-oss/kinde-auth-react';
-
+import { useDescope, useSession, useUser } from '@descope/react-sdk'
+import { Descope } from '@descope/react-sdk'
+import { getSessionToken } from '@descope/react-sdk';
 
 function Home() {
-  const { login, isAuthenticated, user, getToken } = useKindeAuth();
+  const { isAuthenticated, isSessionLoading } = useSession()
+  const { user, isUserLoading } = useUser()
+  const { logout } = useDescope()
   const [accessToken, setAccessToken] = React.useState(null);
 
   const getAccessToken = async () => {
-    const accessToken = await getToken();
+    const accessToken = await getSessionToken();
     setAccessToken(accessToken);
   }
 
   return (
     <div>
-      {isAuthenticated ? (
-        <div>
-          <h1>Welcome {user.given_name}</h1>
-          <button onClick={getAccessToken}>Get access token</button>
-          <div>
+      {!isAuthenticated &&
+        (
+          <Descope
+            flowId="sign-up-or-in"
+            onSuccess={(e) => console.log(e.detail.user)}
+            onError={(e) => console.log('Could not log in!')}
+          />
+        )
+      }
+
+      {
+        (isSessionLoading || isUserLoading) && <p>Loading...</p>
+      }
+
+      {!isUserLoading && isAuthenticated &&
+        (
+          <>
+            <p>Welcome {user.name}</p>
+            <button onClick={() => logout()}>Logout</button>
             <pre>{accessToken}</pre>
-          </div>
-        </div>
-      ) : (
-        <div>
-          <h1>Please sign in to continue</h1>
-          <button onClick={() => login()}>Login</button>
-        </div>
-      )}
+            <button onClick={() => getAccessToken()}>Get Access Token</button>
+          </>
+        )
+      }
     </div>
   );
 
