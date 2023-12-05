@@ -1,45 +1,33 @@
 import React from 'react';
-import { useDescope, useSession, useUser } from '@descope/react-sdk'
-import { Descope } from '@descope/react-sdk'
-import { getSessionToken } from '@descope/react-sdk';
+import { useAuth, useLoginWithRedirect, ContextHolder } from "@frontegg/react";
+
 
 function Home() {
-  const { isAuthenticated, isSessionLoading } = useSession()
-  const { user, isUserLoading } = useUser()
-  const { logout } = useDescope()
-  const [accessToken, setAccessToken] = React.useState(null);
+  const { user, isAuthenticated } = useAuth();
+  const loginWithRedirect = useLoginWithRedirect();
 
-  const getAccessToken = async () => {
-    const accessToken = await getSessionToken();
-    setAccessToken(accessToken);
-  }
+  const logout = () => {
+    const baseUrl = ContextHolder.getContext().baseUrl;
+    window.location.href = `${baseUrl}/oauth/logout?post_logout_redirect_uri=${window.location}`;
+  };
 
   return (
     <div>
-      {!isAuthenticated &&
-        (
-          <Descope
-            flowId="sign-up-or-in"
-            onSuccess={(e) => console.log(e.detail.user)}
-            onError={(e) => console.log('Could not log in!')}
-          />
-        )
-      }
-
-      {
-        (isSessionLoading || isUserLoading) && <p>Loading...</p>
-      }
-
-      {!isUserLoading && isAuthenticated &&
-        (
-          <>
-            <p>Welcome {user.name}</p>
+      {isAuthenticated ? (
+        <div>
+          <p>Welcome {user?.name}</p>
+          <div>
+            <pre>{user.accessToken}</pre>
+          </div>
+          <div>
             <button onClick={() => logout()}>Logout</button>
-            <pre>{accessToken}</pre>
-            <button onClick={() => getAccessToken()}>Get Access Token</button>
-          </>
-        )
-      }
+          </div>
+        </div>
+      ) : (
+        <div>
+          <button onClick={() => loginWithRedirect()}>Login</button>
+        </div>
+      )}
     </div>
   );
 

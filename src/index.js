@@ -3,19 +3,20 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { AuthProvider } from '@descope/react-sdk';
+import { FronteggProvider } from '@frontegg/react';
 import { BrowserRouter } from "react-router-dom";
 
+const contextOptions = {
+  baseUrl: process.env.REACT_APP_FRONTEGG_BASE_URL,
+  clientId: process.env.REACT_APP_FRONTEGG_CLIENT_ID
+};
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AuthProvider
-      projectId={process.env.REACT_APP_DESCOPE_PROJECT_ID}
-    >
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </AuthProvider>
+    <FronteggProvider contextOptions={contextOptions}
+      hostedLoginBox={true}>
+      <App />
+    </FronteggProvider>
   </React.StrictMode>
 );
 
