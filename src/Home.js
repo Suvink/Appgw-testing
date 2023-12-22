@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAuth, useLoginWithRedirect, ContextHolder } from "@frontegg/react";
 
 
@@ -10,6 +10,10 @@ function Home() {
     const baseUrl = ContextHolder.getContext().baseUrl;
     window.location.href = `${baseUrl}/oauth/logout?post_logout_redirect_uri=${window.location}`;
   };
+
+  useEffect(() => {
+    console.log(user)
+  },[user])
 
   return (
     <div>
