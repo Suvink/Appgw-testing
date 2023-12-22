@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { FronteggProvider } from '@frontegg/react';
-import { BrowserRouter } from "react-router-dom";
 
 const contextOptions = {
   baseUrl: process.env.REACT_APP_FRONTEGG_BASE_URL,
